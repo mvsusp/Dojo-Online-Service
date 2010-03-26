@@ -7,6 +7,6 @@ class C
 	end
 end
 c = C.new
-c.test_method
+puts c.test_method
 
 

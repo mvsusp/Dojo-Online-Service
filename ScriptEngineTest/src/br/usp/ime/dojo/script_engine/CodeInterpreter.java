@@ -1,57 +1,60 @@
 package br.usp.ime.dojo.script_engine;
 
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
+
+
+
 public class CodeInterpreter {
 
-	public String interpretFile(String filename) {
-		try {
-			FileInputStream file = new FileInputStream(filename);
-			String code = "";
-			DataInputStream data = new DataInputStream(file);
-			while (data.available() != 0) {
-				String readLine = data.readLine() + "\n";
-				code += readLine;
-			}
-			return interpret(code);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "File not Found";
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "";
+	private StringWriter consoleOutput;
+	private Hashtable languagesTable;
+
+	public CodeInterpreter() {
+		super();
+		consoleOutput = new StringWriter();
+		languagesTable = new Hashtable();
+		languagesTable.put("ruby", "jruby");
+	}
+	
+	public StringWriter getConsoleOutput() {
+		return consoleOutput;
+	}
+	
+	public ArrayList<String> getAllowedLanguages() {
+		ArrayList<String> list = new ArrayList<String>();
+		Enumeration<String> e = languagesTable.keys();
+		while (e.hasMoreElements()) {
+			list.add(e.nextElement().toString());
 		}
+		return list;
 	}
 
-	public String interpret(String code) {
+	public String interpret(String language, String code) {
+		if (languagesTable.get(language) == null){
+			return "Language not supported.";
+		}
 		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine rbEngine = mgr.getEngineByName("jruby");
-		if (rbEngine == null)
-			System.out.println("jruby not found");
-
-		Object parsedCode = null;
+		ScriptEngine scriptEngine = mgr.getEngineByName((String) languagesTable.get(language));
+		StringWriter output = new StringWriter();
+		if (scriptEngine == null) {
+			return language + " not found";
+		}
+		scriptEngine.getContext().setWriter(output);
 		try {
-			parsedCode = rbEngine.eval(code);
-		} catch (ScriptException ex) {
-			ex.printStackTrace();
-		}
-		if (parsedCode != null) {
-			return "" + parsedCode.toString();
-		}
-		return "";
-	}
-
-	public static void main(String[] args) throws NoSuchMethodException {
-		CodeInterpreter interpreter = new CodeInterpreter();
-		System.out.println(interpreter.interpret(""));
+			scriptEngine.eval(code);
+			String result = output.toString();
+			consoleOutput.append(result);
+			return "" + result;
+		} catch (ScriptException e) {
+			return e.getCause().toString();
+		}  
 	}
 }
