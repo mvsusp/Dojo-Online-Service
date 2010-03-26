@@ -93,4 +93,11 @@ public class CodeInterpreterTest {
 		assertEquals("The list should contain 'ruby'", true, list.contains("ruby"));
 	}
 
+	@Test
+	public void aRubyScriptWithSlowCodeShouldTimeout() {
+		String result;
+		result = interpretFile("SlowScript.rb");
+		assertEquals("Timeout exceeded\n", result);
+	}
+	
 }

@@ -10,7 +10,37 @@ import javax.script.ScriptException;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
-
+class evalThread extends Thread {
+	public String result;
+	public boolean finished = false;
+	public String language;
+	public String code;
+	
+	evalThread(String language, String code) {
+		this.language = language;
+		this.code = code;
+		result = "";
+	}
+	
+	@Override
+	public void run() {
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine scriptEngine = mgr.getEngineByName((String) language);
+		StringWriter output = new StringWriter();
+		if (scriptEngine == null) {
+			result = language + " not found";
+		} else {
+			scriptEngine.getContext().setWriter(output);
+			try {
+				scriptEngine.eval(code);
+				result = output.toString();
+			} catch (ScriptException e) {
+				result = e.getCause().toString();
+			}
+		}
+		finished = true;
+	}
+}
 
 public class CodeInterpreter {
 
@@ -41,20 +71,20 @@ public class CodeInterpreter {
 		if (languagesTable.get(language) == null){
 			return "Language not supported.";
 		}
-		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine scriptEngine = mgr.getEngineByName((String) languagesTable.get(language));
-		StringWriter output = new StringWriter();
-		if (scriptEngine == null) {
-			return language + " not found";
-		}
-		scriptEngine.getContext().setWriter(output);
+		evalThread eval = new evalThread(language, code);
+		eval.start();
 		try {
-			scriptEngine.eval(code);
-			String result = output.toString();
-			consoleOutput.append(result);
-			return "" + result;
-		} catch (ScriptException e) {
-			return e.getCause().toString();
-		}  
+			eval.join(5000);
+			if (eval.isAlive()) {
+				eval.interrupt();
+				Thread.sleep(1000);
+				return "Timeout exceeded\n";
+				
+			}
+		} catch (InterruptedException e) {
+			
+		}
+		return eval.result;
+		  
 	}
 }
