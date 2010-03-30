@@ -24,6 +24,8 @@ class evalThread extends Thread {
 	
 	@Override
 	public void run() {
+		final String jrubylibs = "libs/jruby";
+		System.setProperty("org.jruby.embed.class.path", jrubylibs);
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine scriptEngine = mgr.getEngineByName((String) language);
 		StringWriter output = new StringWriter();
@@ -74,12 +76,11 @@ public class CodeInterpreter {
 		evalThread eval = new evalThread(language, code);
 		eval.start();
 		try {
-			eval.join(5000);
+			eval.join(10000);
 			if (eval.isAlive()) {
 				eval.interrupt();
 				Thread.sleep(1000);
 				return "Timeout exceeded\n";
-				
 			}
 		} catch (InterruptedException e) {
 			

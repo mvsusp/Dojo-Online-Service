@@ -100,11 +100,12 @@ public class CodeInterpreterTest {
 		assertEquals("Timeout exceeded\n", result);
 	}
 	
+	/*
 	@Test
 	public void aRubyScriptWithUnitTest() {
 		String result;
 		result = interpretFile("ScriptWithUnitTest.rb");
 		assertEquals("", result);
-	}
+	}*/
 	
 }
