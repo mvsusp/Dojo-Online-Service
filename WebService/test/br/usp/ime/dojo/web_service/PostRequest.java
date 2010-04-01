@@ -35,7 +35,7 @@ public class PostRequest {
 		    //
 		    // home=Cosby&favorite+flavor=flies
 		    // ----------------------------------
-		    BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
+		    BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"));
 		    wr.write("POST "+path+" HTTP/1.0\r\n");
 		    wr.write("Content-Length: "+data.length()+"\r\n");
 		    wr.write("Content-Type: application/x-www-form-urlencoded\r\n");
@@ -84,5 +84,4 @@ public class PostRequest {
 			return "";
 		}
 	}
-	
 }

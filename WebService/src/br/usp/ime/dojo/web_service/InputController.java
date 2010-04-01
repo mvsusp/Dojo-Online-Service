@@ -22,6 +22,8 @@ public class InputController {
 		try{
 			// calls the interpreter
 			CodeInterpreter interpreter = new CodeInterpreter();
+			if(!interpreter.getAllowedLanguages().contains(input.getLanguage()))
+				throw new Exception(input.getLanguage() + ": language not available.");
 			String r = interpreter.interpret(input.getLanguage(), input.getSourceCode());
 			
 			// creates the output and redirects to the output controller 
@@ -30,7 +32,7 @@ public class InputController {
 			result.use(json()).from(out).serialize();
 		}
 		catch(Exception e){
-			Output out = new Output(e.toString());
+			Output out = new Output(e.getMessage());
 			result.include("output", out);
 			result.use(json()).from(out).serialize();
 		}

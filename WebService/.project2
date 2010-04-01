@@ -3,6 +3,7 @@
 	<name>WebService</name>
 	<comment></comment>
 	<projects>
+		<project>ScriptEngineTest</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

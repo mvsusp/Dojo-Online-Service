@@ -6,13 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import com.sun.org.apache.bcel.internal.generic.LAND;
 
 public class CodeInterpreterTest {
 
