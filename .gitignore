@@ -1,2 +1,3 @@
 ScriptEngineTest/bin
 .DS*
+*.class
