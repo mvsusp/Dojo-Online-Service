@@ -1,6 +1,3 @@
-<<<<<<< HEAD:.gitignore
 ScriptEngineTest/bin
 .DS*
-=======
-.DS_Store
->>>>>>> 4db2dd9afc8f353a85c82251b8de78227e281e86:.gitignore
+*.class
