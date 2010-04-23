@@ -15,7 +15,8 @@ $(document).ready(function() {
 	result.toggleReadOnly()
 })
 function postCode() {
-	$.post("input/callInterpreter", {"input.language" : $("#language").val(), "input.sourceCode" : sourceCode.getCode()},
+	$.post("input/callInterpreter", {"input.language" : $("#language").val(), "input.sourceCode" : sourceCode.getCode(), "input.testCode" : testCode.getCode()},
+	
 			function (data) {
 				var txt_result = data.output.result
 				result.edit(txt_result)
@@ -26,10 +27,12 @@ function postCode() {
 <body>
 <form action="#">
 linguagem: <input type="text" id="language" value="ruby" /><br />
-source code: <textarea id="sourceCode" class="codepress ruby linenumbers-on" style="width: 100%; height: 300px"></textarea><br />
+source code: <textarea id="sourceCode" class="codepress ruby linenumbers-on" style="width: 100%; height: 200px"></textarea><br />
+test code: <textarea id="testCode" class="codepress ruby linenumbers-on" style="width: 100%; height: 100px"></textarea><br />
 <input type="button" onclick="postCode()" value="Run"  />
 </form>
-<textarea id="result" class="codepress text linenumbers-on" style="width: 100%; height: 100px; overflow:auto;">
+<hr>
+result: <textarea id="result" class="codepress text linenumbers-on" style="width: 100%; height: 100px; overflow:auto;">
 </textarea>
 </body>
 </html>

@@ -24,7 +24,8 @@ public class InputController {
 			CodeInterpreter interpreter = new CodeInterpreter();
 			if(!interpreter.getAllowedLanguages().contains(input.getLanguage()))
 				throw new Exception(input.getLanguage() + ": language not available.");
-			String r = interpreter.interpret(input.getLanguage(), input.getSourceCode());
+			String code = input.getSourceCode() + "\n" + input.getTestCode();
+			String r = interpreter.interpret(input.getLanguage(), code);
 			
 			// creates the output and redirects to the output controller 
 			Output out = new Output(r);

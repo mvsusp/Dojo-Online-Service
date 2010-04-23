@@ -25,4 +25,8 @@ class TestSimpleNumber < Test::Unit::TestCase
      assert_equal(6, SimpleNumber.new(2).multiply(3) )
    end
  
+   def test_fail
+      assert_equal(6, SimpleNumber.new(2).add(2) )
+   end
+
  end

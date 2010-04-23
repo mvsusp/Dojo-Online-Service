@@ -8,6 +8,7 @@ package br.usp.ime.dojo.web_service;
 public class Input {
 	private String language;
 	private String sourceCode;
+	private String testCode;
 	
 	// empty constructor
 	public Input() {
@@ -32,4 +33,15 @@ public class Input {
 	public void setSourceCode(String sourceCode) {
 		this.sourceCode = sourceCode;
 	}
+
+	// test code - accessor
+	public String getTestCode() {
+		return testCode;
+	}
+	
+	// test code - mutator
+	public void setTestCode(String testCode) {
+		this.testCode = testCode;
+	}
+
 }
