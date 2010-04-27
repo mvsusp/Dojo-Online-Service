@@ -100,7 +100,7 @@ public class CodeInterpreterTest {
 	public void aRubyScriptWithUnitTest() {
 		String result;
 		result = interpretFile("ScriptWithUnitTest.rb");
-		assertEquals("", result);
+		assertEquals(true, result.contains("2 tests, 3 assertions, 1 failures"));
 	}
 	
 }

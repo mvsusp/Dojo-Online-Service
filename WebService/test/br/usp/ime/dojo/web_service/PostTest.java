@@ -13,56 +13,56 @@ public class PostTest {
 	
 	@Test
 	public void aRubyCodeShouldReturnSeven(){
-		String result = submit("ruby", "puts 2 + 5");
+		String result = submit("ruby", "puts 2 + 5", "");
 		assertEquals(buildJSON("7\\u000a"), result);
 	}
 
 
 	@Test
 	public void aRubyScriptWithFunctionCallShouldSayWorks() {
-		String result = submit("ruby", readScript("ruby/SimpleScriptWithFunctionCall.rb"));
+		String result = submit("ruby", readScript("ruby/SimpleScriptWithFunctionCall.rb"), "");
 		assertEquals(buildJSON("works!\\u000a"), result);
 	}
 
 	@Test
 	public void aRubyFunctionCallWithParametersShouldReturn3() {
-		String result = submit("ruby", readScript("ruby/FunctionCallWithParameters.rb"));
+		String result = submit("ruby", readScript("ruby/FunctionCallWithParameters.rb"), "");
 		assertEquals(buildJSON("3\\u000a"), result);
 	}
 
 	@Test
 	public void aRubyCallMethodFromClassShouldReturnSuccess() { 
-		String result = submit("ruby", readScript("ruby/SimpleClassWithMethod.rb"));
+		String result = submit("ruby", readScript("ruby/SimpleClassWithMethod.rb"), "");
 		assertEquals(buildJSON("success\\u000a"), result);
 	}
 
 	@Test
 	public void aRubyFunctionCallWithoutConsoleOutputResultShouldBeEmpty() {
-		String result = submit("ruby", readScript("ruby/FunctionCallWithoutReturn.rb"));
+		String result = submit("ruby", readScript("ruby/FunctionCallWithoutReturn.rb"), "");
 		assertEquals(buildJSON(""), result);
 	}
 
 	@Test
 	public void aRubyEmptyScriptResultShouldbeEmpty() {
-		String result = submit("ruby","");
+		String result = submit("ruby","", "");
 		assertEquals(buildJSON(""), result);
 	}
 
 	@Test
 	public void aRubyScriptWithInvalidCodeShouldReturnErrorMessage() {
-		String result = submit("ruby", "bla");
+		String result = submit("ruby", "bla", "");
 		assertEquals(buildJSON("org.jruby.exceptions.RaiseException: undefined local variable or method `bla' for main:Object"), result);
 	}
 
 	@Test
 	public void aRubyScriptWithSlowCodeShouldTimeout() {
-		String result = submit("ruby", readScript("ruby/SlowScript.rb"));
+		String result = submit("ruby", readScript("ruby/SlowScript.rb"), "");
 		assertEquals(buildJSON("Timeout exceeded\\u000a"), result);
 	}
 	
 	@Test
 	public void assemblyShouldNotBeAvailable(){
-		String result = submit("assembly", "MOV EAX, [EBX]");
+		String result = submit("assembly", "MOV EAX, [EBX]", "");
 		assertEquals(buildJSON("assembly: language not available."), result);
 	}
 	
@@ -98,10 +98,11 @@ public class PostTest {
 		return result.substring(pos+2);
 	}
 	
-	private String submit(String language, String sourceCode){
+	private String submit(String language, String sourceCode, String testCode){
 		HashMap<String,String> parameters = new HashMap<String,String>();
 		parameters.put("input.sourceCode", sourceCode);
 		parameters.put("input.language", language);		
+		parameters.put("input.testCode", testCode);
 		String result = PostRequest.send("localhost", 8080, "/WebService/input/callInterpreter", parameters);
 		return headFilter(result);
 	}
