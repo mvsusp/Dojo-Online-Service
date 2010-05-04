@@ -1,3 +1,5 @@
 ScriptEngineTest/bin
+WebService/build
 .DS*
 *.class
+.classpath

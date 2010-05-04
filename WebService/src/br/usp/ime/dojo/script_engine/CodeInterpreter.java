@@ -34,6 +34,9 @@ class evalThread extends Thread {
 			try {
 				scriptEngine.eval(code);
 				result = output.toString();
+				if (!result.contains("Finished in")){
+					result = "Estouro de pilha";
+				}
 			} catch (ScriptException e) {
 				result = e.getCause().toString();
 			}

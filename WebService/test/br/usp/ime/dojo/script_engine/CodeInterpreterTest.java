@@ -103,4 +103,12 @@ public class CodeInterpreterTest {
 		assertEquals(true, result.contains("2 tests, 3 assertions, 1 failures"));
 	}
 	
+	@Test
+	public void aRubyScriptWithUnitTestWithStackOverFlow() {
+		String result;
+		String expectedResult = "Estouro de pilha";
+		result = interpretFile("testScriptWithUnitTestWithStackOverflow.rb");
+		System.out.println(result);
+		assertEquals(true, result.equals(expectedResult));
+	}
 }
